@@ -56,36 +56,31 @@ bool RPN::is_valid_op(char op)
 
 int RPN::process_expr()
 {
-    for (size_t i = 0; i < expr.size(); i++)
+    std::stringstream ss(expr);
+
+    std::string token;
+    while (ss >> token)
     {
-        if (isdigit(expr[i]))
-        {
-            if (i + 1 < expr.size() - 1 && isdigit(expr[i + 1]))
-            {
-                error_msg = "Error : expect a single digit number!";
-                return 1;
-            }
-            stack.push(expr[i] - 48);
-        }
-        else if (is_valid_op(expr[i]))
+
+        if (token.size() == 1 && isdigit(token[0]))
+            stack.push(token[0] - 48);
+        else if (token.size() == 1 && is_valid_op(token[0]))
         {
             if (stack.size() < 2)
             {
                 error_msg = "Error : Not enough numbers to do an operation!";
                 return 1;
             }
-            if (i + 1 < expr.size() - 1 && is_valid_op(expr[i + 1]))
-            {
-                error_msg = "Error : expect a single operation!";
-                return 1;
-            }
-            do_operation(stack, expr[i]);
+            do_operation(stack, token[0]);
         }
-        else if (expr[i] == ' ')
-            continue;
+        else if (token.size() > 1)
+        {
+            error_msg = "Error : each character must be seperated by space!";
+            return 1;
+        }
         else
         {
-            error_msg = "Error : not a valid character!";
+            error_msg = "Error : Unknown Character : " + token;
             return 1;
         }
     }
