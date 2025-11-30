@@ -23,9 +23,13 @@ std::string RPN::get_error_msg() const
     return error_msg;
 }
 
-void RPN::do_operation(std::stack<int> &stack, char op)
+bool RPN::do_operation(std::stack<int> &stack, char op)
 {
-
+    if (stack.size() < 2)
+    {
+        error_msg = "Error : Not enough numbers to do an operation!";
+        return false;
+    }
     int second = stack.top();
     stack.pop();
     int first = stack.top();
@@ -39,12 +43,18 @@ void RPN::do_operation(std::stack<int> &stack, char op)
         stack.push(first + second);
         break;
     case '/':
+        if (second == 0)
+        {
+            error_msg = "Error : Can't divide by 0!";
+            return false;
+        }
         stack.push(first / second);
         break;
     case '*':
         stack.push(first * second);
         break;
     }
+    return true;
 }
 
 bool RPN::is_valid_op(char op)
@@ -56,8 +66,10 @@ bool RPN::is_valid_op(char op)
 
 int RPN::process_expr()
 {
-    std::stringstream ss(expr);
+    while (!stack.empty())
+        stack.pop();
 
+    std::stringstream ss(expr);
     std::string token;
     while (ss >> token)
     {
@@ -66,16 +78,12 @@ int RPN::process_expr()
             stack.push(token[0] - 48);
         else if (token.size() == 1 && is_valid_op(token[0]))
         {
-            if (stack.size() < 2)
-            {
-                error_msg = "Error : Not enough numbers to do an operation!";
+            if (!do_operation(stack, token[0]))
                 return 1;
-            }
-            do_operation(stack, token[0]);
         }
         else if (token.size() > 1)
         {
-            error_msg = "Error : each character must be seperated by space!";
+            error_msg = "Error: invalid token must be single-digit or operator!";
             return 1;
         }
         else

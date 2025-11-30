@@ -23,7 +23,7 @@ class RPN
         ~RPN();
 
         int process_expr();
-        void do_operation(std::stack<int> &stack, char op);
+        bool do_operation(std::stack<int> &stack, char op);
         std::string get_error_msg() const;
         bool is_valid_op(char op);
 
