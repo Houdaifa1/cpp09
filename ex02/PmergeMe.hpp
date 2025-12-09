@@ -6,7 +6,10 @@
 # include <vector>
 # include <stdexcept>
 # include <limits>
+# include <ctime>
 # include <algorithm>
+#include <iomanip>
+
 
 class PmergeMe
 {
@@ -28,6 +31,12 @@ class PmergeMe
         void make_vec_pairs();
         void make_deq_pairs();
 
+        std::vector<std::pair<int, int> > sort_pairs(const std::vector<std::pair<int, int> > &vec_pairs);
+
+        std::vector<size_t> generate_jacobsthal(size_t n);
+        void insert_pending_ford_johnson(std::deque<int> &main_chain, const std::deque<int> &pend_chain);
+        void insert_pending_ford_johnson(std::vector<int> &main_chain, const std::vector<int> &pend_chain);
+
     public :
 
         PmergeMe();
@@ -41,7 +50,7 @@ class PmergeMe
                 virtual const char *what() const throw();
         };
 
-        void load_containers(char **nbrs, int size);
+        void sort(char **nbrs, int size);
         void pars_num(std::string num_str, int &num);
 
 

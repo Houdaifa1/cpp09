@@ -11,7 +11,7 @@ int main (int arc, char **arv)
     PmergeMe frd_jsn;
     try 
     {
-        frd_jsn.load_containers(arv, arc);
+        frd_jsn.sort(arv, arc);
     }
     catch (std::exception &e)
     {
