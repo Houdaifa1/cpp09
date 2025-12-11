@@ -171,12 +171,14 @@ int BitcoinExchange::load_input_file(char *file_name)
         if (parsedbline(line, date, price, '|'))
         {
             std::map<std::string, float>::iterator it = dbmap.lower_bound(date);
-            if (it == dbmap.begin() && it->first > date)
+            if (it == dbmap.end())
+                --it;
+            else if (it == dbmap.begin() && it->first > date)
             {
                 std::cerr << "Error : Date not found." << std::endl;
                 continue;
             }
-            if (it != dbmap.begin() && it->first != date)
+            else if (it->first != date)
                 it--;
             std::cout << date << " => " << price << " = " << price * it->second << std::endl;
         }
@@ -184,5 +186,4 @@ int BitcoinExchange::load_input_file(char *file_name)
             std::cerr << error_msg << std::endl;
     }
     return 0;
-
 }

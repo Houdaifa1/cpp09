@@ -194,11 +194,11 @@ void PmergeMe::sort(char **nbrs, int size)
    
     std::clock_t start_vec = std::clock();
     make_vec_pairs();
-    double time_vec = static_cast<double>(std::clock() - start_vec) / CLOCKS_PER_SEC * 1e6;
+    double time_vec = static_cast<double>(std::clock() - start_vec) / CLOCKS_PER_SEC * 1000;
 
     std::clock_t start_deq = std::clock();
     make_deq_pairs();
-    double time_deq = static_cast<double>(std::clock() - start_deq) / CLOCKS_PER_SEC * 1e6;
+    double time_deq = static_cast<double>(std::clock() - start_deq) / CLOCKS_PER_SEC * 1000;
 
     std::cout << "After: ";
     for (size_t i = 0; i < vec_cont.size(); ++i)
